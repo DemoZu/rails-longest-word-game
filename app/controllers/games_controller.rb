@@ -1,4 +1,9 @@
+require "json"
+require "open-uri"
+
 class GamesController < ApplicationController
+  # include GamesHelper
+  # include ApplicationHelper
 
   def new
     @letters = ('A'..'Z').to_a.sample(10)
@@ -6,17 +11,9 @@ class GamesController < ApplicationController
 
   def score
     @word = params[:word]
-    @letters
+    url = "https://wagon-dictionary.herokuapp.com/#{@word}"
+    word_serialized = URI.open(url).read
+    @result = JSON.parse(word_serialized)
+    @letters_chosen = new
   end
-
-  # def search
-  #   fetch(`https://wagon-dictionary.herokuapp.com/${@word}`)
-  #   .then(response => response.json())
-  #   .then((data) => {
-  #     // "found": false,
-  #     // "word": ":word";
-  #     // "error": "word not found";
-  #     console.log(data)
-  #     })}
-  # end
 end
